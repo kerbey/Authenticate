@@ -3,9 +3,9 @@ import javafx.event.ActionEvent;
 
 import java.util.Scanner;
 
-public class Person implements PersonUserInterface// extends Application
+public class Person //extends Application
 {
-  private String firstName;
+    private String firstName;
     private String gender;
     private String dob;
     private String SS;
@@ -23,59 +23,59 @@ public class Person implements PersonUserInterface// extends Application
         this.lastName=lastName;
     }
 
-    @Override
+
     public String getGender() {
         return gender;
     }
 
-    @Override
+
     public void setGender(String gender) {
         this.gender = gender;
     }
-    @Override
+
     public String getLastName() {
         return lastName;
     }
 
-    @Override
+
     public void setLastname(String lastName) {
         this.lastName = lastName;
     }
 
-    @Override
+
     public String getSS() {
         return SS;
     }
 
-    @Override
+
     public void setSS(String SS) {
         this.SS = SS;
     }
 
 
-    @Override
+
     public String getDob() {
         return dob;
     }
 
-    @Override
+
     public void setDob(String dob) {
         this.dob = dob;
     }
 
 
-    @Override
+
     public String getFirstName() {
         return firstName;
     }
 
-    @Override
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
 
-    @Override
+
     public Boolean Compare(String text, String genderBoxText, String dobBoxText, String SSNBoxText,
                            String lastNameBoxText)//throws Exception
     {
@@ -135,8 +135,8 @@ public class Person implements PersonUserInterface// extends Application
             return false;
     }
 
-    @Override
-    public void login(ActionEvent actionEvent) {
+
+    public void login() {
         System.out.println("hello");
     }
 }
