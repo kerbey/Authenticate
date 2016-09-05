@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Created by kerbeychevalier on 8/31/16.
  */
-public class userClass extends Person implements userClassInterface// implements EventHandler<ActionEvent>
+public class userClass extends Person //implements EventHandler<ActionEvent>
 {
    private String profilePhoto;
     //protected Stage primaryStage;
@@ -32,67 +32,67 @@ public class userClass extends Person implements userClassInterface// implements
       this.passWord=passWord;
    }
 
-   @Override
+
    public String getUserName()
    {
       return UserName;
    }
 
-   @Override
+
    public void setUserName(String userName)
    {
       UserName = userName;
    }
 
-   @Override
+
    public String getEmail()
    {
       return email;
    }
 
-   @Override
+
    public void setEmail(String email)
    {
       this.email = email;
    }
 
-   @Override
+
    public String getPhoneNumber()
    {
       return phoneNumber;
    }
 
-   @Override
+
    public void setPhoneNumber(String phoneNumber)
    {
       this.phoneNumber = phoneNumber;
    }
 
-   @Override
+
    public String getPassWord()
    {
       return passWord;
    }
 
-   @Override
+
    public void setPassWord(String passWord)
    {
       this.passWord = passWord;
    }
 
-   @Override
+
    public String getProfilePhoto()
    {
       return profilePhoto;
    }
 
-   @Override
+
    public void setProfilePhoto(String profilePhoto)
    {
       this.profilePhoto = profilePhoto;
    }
 
-    @Override
+
     public Boolean Compare2(String text, String text1, String text2, String text3)
     {
         System.out.println();
