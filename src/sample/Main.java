@@ -18,15 +18,10 @@ public class Main extends Application implements EventHandler<ActionEvent>
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-//     userClass u = new userClass();
-//        u.SignUp(primaryStage);
         System.out.println("start");
 
         primaryStage.setTitle("Start window");
-        //Label t= new Label();//space for text box
-        //t.setMaxHeight(5);
-        //t.setMaxWidth(5);
-        //t.setAlignment(Pos.TOP_CENTER);
+
         username= new TextField();
         password= new TextField();
         username.setText("userName");
@@ -43,7 +38,8 @@ public class Main extends Application implements EventHandler<ActionEvent>
                 {
                     Controller u =new Controller();
                     try {
-                        u.LogIn(primaryStage);
+                        String message="Login";
+                        u.LogIn(primaryStage, message);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -53,23 +49,21 @@ public class Main extends Application implements EventHandler<ActionEvent>
         StackPane layout= new StackPane();
 
 
-        //layout.getChildren().add(logIn);
+
         SignUp= new Button("Sign up");
         SignUp.setOnAction(event ->
         {
             Controller u = new Controller();
             try {
-                u.SignUp(primaryStage);
+                String message="Signup";
+                u.SignUp(primaryStage, message);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
         GridPane.setConstraints(SignUp,3,8);//row,column
-        //g.add(logIn,9,9);//row,column
-        //g.add(SignUp,10,9);
-        //layout.getChildren().add(g);
-        //g.getChildren().addAll(username, password,logIn,SignUp);
-        g.getChildren().addAll(/*username, password,*/logIn,SignUp);
+
+        g.getChildren().addAll(logIn,SignUp);
         layout.getChildren().add(g);
         Scene scene= new Scene(layout, 300, 250);
         primaryStage.setScene(scene);
@@ -91,6 +85,7 @@ public class Main extends Application implements EventHandler<ActionEvent>
     public static void main(String[] args)
     {
         System.out.println("main");
+
         launch(args);
     }
 }
