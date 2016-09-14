@@ -21,7 +21,7 @@ public class Controller
             phoneNumberBox, photoPathBox;
     Button logIn, SignUp, SignIn, addPhoto;
     Label firstNameLabel;
-    private String photopath;
+    static public String photopath;
 
     public void LogIn(Stage primaryStage,String message) throws IOException {
         Countfilelines();
@@ -250,15 +250,17 @@ public class Controller
             Stage newprimaryStage= (Stage) (((Node) event.getSource()).getScene().getWindow());
             //^gets window for user to choose pictures
             File file= fileChooser.showOpenDialog(primaryStage);//user is able to choose a photo because of this
-            //System.out.println(file.getPath()+"");
-            String photopath=file.getPath()+toString();
+
+             photopath=file.getPath();
             //^path to photo stored in string to add to text file
             photoPathBox.setText(file.getPath());
+
             photoPathBox.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
             photoPathBox.getText();
         });
         GridPane.setConstraints(addPhoto,2,11);//row, column
         photopath2=photopath+"";
+
         SignIn= new Button("Create Account");
         SignIn.setOnAction(event ->
         {//go to person class to see if first and last name gender date of birth and social security number
@@ -304,7 +306,7 @@ public class Controller
                     line = count+1 + " " + firstNameBox.getText() + "," + lastNameBox.getText() + "," + dobBox.getText() +
                             "," + genderBox.getText() + "," + username.getText() + "," + password.getText() + "," +
                             SSNBox.getText() + "," + emailBox.getText() + "," + SSNBox.getText() + "," + phoneNumberBox.getText()
-                            + ","+photopath2;
+                            + ","+photoPathBox.getText();
                     olderLines += "\n" + line;
                     count++;
                     PrintWriter rewrite2 = null;
@@ -342,10 +344,10 @@ public class Controller
         GridPane.setConstraints(SignIn,2,10);//row, column
         GridPane.setConstraints(photoPathBox,2,12);//row,column
         g.getChildren().addAll( firstNameBox, lastNameBox, dobBox
-        ,genderBox,username,password,confirmPasswordBox,SignIn, addPhoto,photoPathBox, emailBox, SSNBox);
+        ,genderBox,username,password,confirmPasswordBox,SignIn, addPhoto, phoneNumberBox,photoPathBox, emailBox, SSNBox);
         StackPane layout= new StackPane();
         layout.getChildren().add(g);
-        Scene scene= new Scene(layout, 300, 550);//width by height of window
+        Scene scene= new Scene(layout, 300, 570);//width by height of window
         primaryStage.setScene(scene);
         primaryStage.show();
     }
