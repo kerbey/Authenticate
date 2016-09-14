@@ -1,82 +1,108 @@
 package sample;
-
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.*;
 import java.util.Scanner;
-
 /**
  * Created by kerbeychevalier on 9/2/16.
  */
-public class Controller implements  EventHandler<ActionEvent>//implements EventHandler<ActionEvent>
+public class Controller
 {
-   // String line = "";
-   String File = "LoginInformation.txt";
-    TextField username, password, firstNameBox, lastNameBox, dobBox
-            , emailBox,genderBox, confirmPasswordBox, SSNBox, phoneNumberBox;
+    String line = "";Scanner scanFile;int count=0;String File = "LoginInformation.txt";
+    TextField username, password, firstNameBox, lastNameBox, dobBox, emailBox,genderBox, confirmPasswordBox, SSNBox,
+            phoneNumberBox, photoPathBox;
     Button logIn, SignUp, SignIn, addPhoto;
-    Label userNameLabel, passwordLabel, confirmLabel, dobLabel, emailLabel, genderLabel,firstNameLabel,
-            lastNameLabel,SSNLabel,phoneNumberLabel;
+    Label firstNameLabel;
+    private String photopath;
 
-    public void LogIn(Stage primaryStage)
-    {
+    public void LogIn(Stage primaryStage,String message) throws IOException {
+        Countfilelines();
         System.out.println("Controller LogIn");
-        primaryStage.setTitle("Log In");
-
-        userNameLabel= new Label("userName");
-        passwordLabel= new Label("password(include at least 1 number, 1 upper case letter, 1 lower case letter" +
-                ", 1 special character) ");
-        confirmLabel= new Label("confirm password");
+        primaryStage.setTitle(message);
         username= new TextField();
+        username.setPromptText("enter username");
+        username.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+        username.getText();
         password= new TextField();
-
+        password.setPromptText("enter password");
+        password.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+        password.getText();
         confirmPasswordBox= new TextField();
-
+        confirmPasswordBox.setPromptText("confirm password");
+        confirmPasswordBox.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+        confirmPasswordBox.getText();
         GridPane g= new GridPane();//space for buttons
         g.setPadding(new Insets(10,10,10,10));
-        g.setHgap(8);//height for button space
-        g.setVgap(18);//length for button space
-
+        g.setHgap(5);//height for button space
+        g.setVgap(5);//length for button space
         GridPane.setConstraints(username,0,1);//row by column
-        GridPane.setConstraints(userNameLabel,0,0);//row by column
-        GridPane.setConstraints(password,0,3);//row by column
-        GridPane.setConstraints(passwordLabel,0,2);//row by column
-        GridPane.setConstraints(confirmPasswordBox,0,5);//row by column
-        GridPane.setConstraints(confirmLabel,0,4);//row by column
-
+        GridPane.setConstraints(password,0,2);//row by column
+        GridPane.setConstraints(confirmPasswordBox,0,3);//row by column
         logIn= new Button("Login");
         logIn.setOnAction(event ->
                 {
                     if(password.getText().equals(confirmPasswordBox.getText())
                             && passwordcheck(password.getText())==true)
-                    {
-                        Scanner scanFile = Controller.createTextRead(File);// scan a file
-                        //count = scanFile.nextInt();
-                        String line = scanFile.nextLine();
-                        for(int n=0;n<line.length();n++)
-                        {
-                            if(line.substring(n,n+1).contains(password.getText()))
-                            {
+                    {//when both passwords match check on the file to see if they match the file's password
+                        System.out.println("passwords match");
+                         scanFile = Controller.createTextRead(File);// scan a file
+                        count = scanFile.nextInt();
+                        for(int n=0;n<count;n++)
+                        {//for loop for going through multiple lines in a text file
+                            String compareLine="";//string made for the username on the line
+                            line = scanFile.nextLine();
+                            System.out.println("line=="+line);
+                            int commaCount=0;
+                            for(int m=0;m<line.length();m++)
+                            {//for loop for going through multiple characters in a text file line
+                                //System.out.println("Line.substring==" + line.substring(m,m+1));
+                                if(line.substring(m,m+1).contains(","))
+                                {//counts the commas until getting to the fourth and stops erasing the string
+                                    commaCount++;
+                                    if(commaCount!=5)
+                                    {
+                                        System.out.println("compareLine 5=="+compareLine);
+                                        compareLine = "";
+                                    }
+                                    else if(commaCount>5)
+                                    {
+                                        m=line.length();
+                                    }
+                                }
+                               else if(!line.substring(m,m+1).contains(",") && commaCount>3)
+                                {//adds other characters to the string we'll be comparing
+                                        compareLine += line.substring(m, m + 1);
+                                    System.out.println("compareLine=="+compareLine);
+                                }
+                            }//this if else statement compares entered in username and password with the one from the
+                            //textfile
+                            if (line.contains(compareLine)) {
                                 //System.out.println("password confirmed welcome");
-                                welcome(primaryStage);
-
-                            }
-                            else if(!line.substring(n,n+1).contains(password.getText()))
-                            {
-                               //System.out.println("password and confirm password match but not found in file");
-                                incorrectLogin(primaryStage);
+                                String message2="Welcome user.";
+                                try {
+                                    LogIn(primaryStage, message2);//ogIn(primaryStage, message2);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                                 n=line.length();
-                            }
-
+                                } else if (!line.contains(compareLine)) {
+                                    //System.out.println("password and confirm password match but not found in file");
+                                String message2="incorrect password";
+                                try {
+                                    LogIn(primaryStage, message2);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                    n = line.length();
+                                }
                         }
                         System.out.println(line);
                         scanFile.close();
@@ -84,45 +110,34 @@ public class Controller implements  EventHandler<ActionEvent>//implements EventH
                     else
                     {
                         System.out.println("password and confirm password don't match");
-                        incorrectLogin(primaryStage);
+                       String message2="incorrect password";
+                        try {
+                            LogIn(primaryStage, message2);//ogIn(primaryStage, message2);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
         );
         GridPane.setConstraints(logIn,0,6);//row,column
         StackPane layout= new StackPane();
-        g.getChildren().addAll(username,userNameLabel, password,passwordLabel,confirmPasswordBox,confirmLabel, logIn);
+        g.getChildren().addAll(username,password, confirmPasswordBox,logIn);
         layout.getChildren().add(g);
-        Scene scene= new Scene(layout, 500, 300);//width by height of window
+        Scene scene = new Scene(layout, 400, 200);//width by height of window
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-    private void welcome(Stage primaryStage)
+    private void Countfilelines() throws IOException
     {
-        primaryStage.setTitle("Welcome");
-        firstNameLabel = new Label("Login sucessful");
-        SignIn= new Button("OK");
-        GridPane grid = new GridPane();//space for buttons
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setHgap(8);//height for button space
-        grid.setVgap(18);//length for button space
-
-        GridPane.setConstraints(firstNameLabel, 0, 0);//row by column
-        SignIn.setOnAction(e->
-                {
-                    System.exit(0);
-                }
-        );
-        GridPane.setConstraints(SignIn, 0, 2);//row by column
-
-        grid.getChildren().addAll(firstNameLabel,SignIn);
-        StackPane layout= new StackPane();
-        layout.getChildren().add(grid);
-        Scene scene= new Scene(layout, 300, 100);//width by height of window
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        System.out.println("Countfilelines");
+        LineNumberReader  lnr = new LineNumberReader(new FileReader(new File(File)));
+        lnr.skip(Long.MAX_VALUE);
+        System.out.println(lnr.getLineNumber()+1); //Add 1 because line index starts at 0
+// Finally, the LineNumberReader object should be closed to prevent resource leak
+        lnr.close();
+        count=lnr.getLineNumber()+1;
+        System.out.println("count=="+count);
     }
-
     private Boolean passwordcheck(String text)
     {
         String letters="QWERTYUIOPASDFGHJKLZXCVBNM";
@@ -158,7 +173,6 @@ public class Controller implements  EventHandler<ActionEvent>//implements EventH
                     v=characters.length();
                 }
             }
-
         }
         if(compare1==true&&compare2==true&&compare3==true)
             return true;//if your password has all of the required characters
@@ -166,192 +180,175 @@ public class Controller implements  EventHandler<ActionEvent>//implements EventH
             return false;//if your password has none of the required characters
     }
 
-    public void SignUp(Stage primaryStage) throws Exception
+    public void SignUp(Stage primaryStage, String message) throws Exception
     {
+        Countfilelines();
         System.out.println("Controller Class sign up method.");
-
-        primaryStage.setTitle("Sign Up");
+        System.out.print("Count=="+count);
+        primaryStage.setTitle(message);
         firstNameBox= new TextField();
-        firstNameLabel= new Label("firstName");
+        firstNameBox.setPromptText("enter firstname");
+        firstNameBox.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+        firstNameBox.getText();
         lastNameBox= new TextField();
-        lastNameLabel= new Label("lastName");
+        lastNameBox.setPromptText("enter lastname");
+        lastNameBox.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+        lastNameBox.getText();
         dobBox= new TextField();
-        dobLabel= new Label("date of birth");
+        dobBox.setPromptText("enter date of birth");
+        dobBox.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+        dobBox.getText();
         genderBox= new TextField();
-        genderLabel= new Label("gender");
+        genderBox.setPromptText("enter gender");
+        genderBox.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+        genderBox.getText();
         username= new TextField();
-        userNameLabel= new Label("userName");
+        username.setPromptText("enter username");
+        username.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+        username.getText();
         password= new TextField();
-        passwordLabel= new Label("password (include at least 1 number, 1 upper case letter, 1 lower case letter" +
+        password.setPromptText("password (include at least 1 number, 1 upper case letter, 1 lower case letter"+
                 ", 1 special character)");
+        password.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+        password.getText();
         confirmPasswordBox= new TextField();
-        confirmLabel= new Label("confirm password");
-        GridPane g= new GridPane();//space for buttons
-        g.setPadding(new Insets(10,10,10,10));
-        g.setHgap(8);//height for button space
-        g.setVgap(18);//length for button space
-        GridPane.setConstraints(firstNameLabel,2,0);//row by column
-        GridPane.setConstraints(firstNameBox,2,1);//row by column
-        GridPane.setConstraints(lastNameLabel,2,2);//row by column
-        GridPane.setConstraints(lastNameBox,2,3);//row by column
-        GridPane.setConstraints(dobLabel,2,4);//row by column
-        GridPane.setConstraints(dobBox,2,5);//row by column
-        GridPane.setConstraints(genderLabel,2,6);//row by column
-        GridPane.setConstraints(genderBox,2,7);//row by column
-        GridPane.setConstraints(userNameLabel,2,8);//row by column
-        GridPane.setConstraints(username,2,9);//row by column
-        GridPane.setConstraints(passwordLabel,2,10);//row by column
-        GridPane.setConstraints(password,2,11);//row by column
-        GridPane.setConstraints(confirmLabel,2,12);//row by column
-        GridPane.setConstraints(confirmPasswordBox,2,13);//row by column
-        StackPane layout= new StackPane();
-        SignIn= new Button("Next");
-        SignIn.setOnAction(event ->
-                {
-                    if(password.getText().contains(confirmPasswordBox.getText())
-                            && passwordcheck(password.getText())==true)//continue if password and confirm password are
-                    {//true and have required characters
-                        try {
-
-                            SignUp2(primaryStage);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    else
-                    {
-                        System.out.println("password's don't match");
-                        try {
-                            SignUp(primaryStage);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-        );
-        GridPane.setConstraints(SignIn,2,14);//row,column
-
-        g.getChildren().addAll(firstNameLabel, firstNameBox,lastNameLabel, lastNameBox,dobLabel, dobBox,genderLabel
-        ,genderBox,userNameLabel,username,passwordLabel,password,confirmLabel,confirmPasswordBox,SignIn);
-        layout.getChildren().add(g);
-        Scene scene= new Scene(layout, 700, 690);//width by height of window
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-    public void SignUp2(Stage primaryStage) throws Exception
-    {
-        System.out.println("Signup2");
-        primaryStage.setTitle("Sign Up part 2");
+        confirmPasswordBox.setPromptText("confirm password");
+        confirmPasswordBox.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+        confirmPasswordBox.getText();
         emailBox= new TextField();
-        emailLabel= new Label("email");
+        emailBox.setPromptText("enter email");
+        emailBox.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+        emailBox.getText();
         SSNBox= new TextField();
-        SSNLabel= new Label("Social Security Number");
+        SSNBox.setPromptText("enter social security number");
+        SSNBox.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+        SSNBox.getText();
         phoneNumberBox=new TextField();
-        phoneNumberLabel= new Label("phone number (country code + area code + phone number)");
+        phoneNumberBox.setPromptText("enter phonenumber");
+        phoneNumberBox.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+        phoneNumberBox.getText();
+        photoPathBox=new TextField();
         GridPane g= new GridPane();//space for buttons
         g.setPadding(new Insets(10,10,10,10));
         g.setHgap(8);//height for button space
         g.setVgap(18);//length for button space
-        GridPane.setConstraints(emailLabel,2,0);//row by column
-        GridPane.setConstraints(emailBox,2,1);//row by column
-        GridPane.setConstraints(SSNLabel,2,3);//row by column
-        GridPane.setConstraints(SSNBox,2,4);//row by column
-        GridPane.setConstraints(phoneNumberLabel,2,5);//row by column
-        GridPane.setConstraints(phoneNumberBox,2,6);//
+        GridPane.setConstraints(firstNameBox,2,0);//row by column
+        GridPane.setConstraints(lastNameBox,2,1);//row by column
+        GridPane.setConstraints(dobBox,2,2);//row by column
+        GridPane.setConstraints(genderBox,2,3);//row by column
+        GridPane.setConstraints(username,2,4);//row by column
+        GridPane.setConstraints(password,2,5);//row by column
+        GridPane.setConstraints(confirmPasswordBox,2,6);//row by column
+        GridPane.setConstraints(emailBox,2,7);//row by column
+        GridPane.setConstraints(SSNBox,2,8);//row by column
+        GridPane.setConstraints(phoneNumberBox,2,9);//
+        String photopath2;
+        addPhoto= new Button("Browse");
+        addPhoto.setOnAction(event ->
+        {
+            FileChooser fileChooser = new FileChooser();
+            Stage newprimaryStage= (Stage) (((Node) event.getSource()).getScene().getWindow());
+            //^gets window for user to choose pictures
+            File file= fileChooser.showOpenDialog(primaryStage);//user is able to choose a photo because of this
+            //System.out.println(file.getPath()+"");
+            String photopath=file.getPath()+toString();
+            //^path to photo stored in string to add to text file
+            photoPathBox.setText(file.getPath());
+            photoPathBox.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
+            photoPathBox.getText();
+        });
+        GridPane.setConstraints(addPhoto,2,11);//row, column
+        photopath2=photopath+"";
         SignIn= new Button("Create Account");
         SignIn.setOnAction(event ->
         {//go to person class to see if first and last name gender date of birth and social security number
             Person p = new Person(firstNameBox.getText(),genderBox.getText(),dobBox.getText(),SSNBox.getText(),
                     lastNameBox.getText());
-           Boolean answer= p.Compare(firstNameBox.getText(),genderBox.getText(),dobBox.getText(),SSNBox.getText(),
+            Boolean answer= p.Compare(firstNameBox.getText(),genderBox.getText(),dobBox.getText(),SSNBox.getText(),
                     lastNameBox.getText());
-            System.out.println("Boolean answer is "+answer);
+            //System.out.println("Boolean answer is "+answer);
             //go to asnwer class to see if username email phonenumber and password match and to see if usernames
             //match with any others
             userClass u= new userClass(username.getText(), emailBox.getText(), phoneNumberBox.getText(),
                     password.getText());
-           Boolean answer2= u.Compare2(username.getText(), emailBox.getText(), phoneNumberBox.getText()
+            Boolean answer2= u.Compare2(username.getText(), emailBox.getText(), phoneNumberBox.getText()
                     , password.getText());
-            System.out.println("Boolean answer2 is "+answer2);
-
-            if((answer.equals(true)&& answer2.equals(true)) || (answer.equals(false)&&answer2.equals(true)))
-            {//if signup username and username on list are same then dont write to file//and enter a different one
-                primaryStage.setTitle("Incorrect");
-                firstNameLabel = new Label("choose a new username");
-                SignIn= new Button("OK");
-                GridPane grid = new GridPane();//space for buttons
-                grid.setPadding(new Insets(10, 10, 10, 10));
-                grid.setHgap(8);//height for button space
-                grid.setVgap(18);//length for button space
-
-                GridPane.setConstraints(firstNameLabel, 0, 0);//row by column
-                SignIn.setOnAction(e->
-                        {
-                            try
-                            {
-                                SignUp(primaryStage);
-                            } catch (Exception e1) {
-                                e1.printStackTrace();
-                            }
-                        }
-                );
-                GridPane.setConstraints(SignIn, 0, 2);//row by column
-
-                grid.getChildren().addAll(firstNameLabel,SignIn);
-                StackPane layout= new StackPane();
-                layout.getChildren().add(grid);
-                Scene scene= new Scene(layout, 300, 100);//width by height of window
-                primaryStage.setScene(scene);
-                primaryStage.show();
+            //System.out.println("Boolean answer2 is "+answer2);
+            if(password.getText().contains(confirmPasswordBox.getText())
+                && passwordcheck(password.getText())==true)//continue if password and confirm password are matching
+            {
+                if ((answer.equals(true) && answer2.equals(true)) || (answer.equals(false) && answer2.equals(true)))
+                {//if signup username and username on list are same then dont write to file//and enter a different one
+                    System.out.println("incorrect");
+                    String message2="info already exists try again";
+                    try {
+                        SignUp(primaryStage,message2);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                   // System.out.println("move this to text file");
+                    scanFile = Controller.createTextRead(File);// scan a file
+                    String olderLines = "";
+                    olderLines += scanFile.nextLine();
+                    System.out.println(" olderLines==" + olderLines);
+                    System.out.println();
+                    for (int n = 1; n < count; n++) {//for loop for going through multiple lines in a text file to add to a string
+                        //that will get reprinted
+                        olderLines += "\n" + scanFile.nextLine();
+                        System.out.println("loop, olderLines==" + olderLines);
+                        System.out.println();
+                    }
+                    line = count+1 + " " + firstNameBox.getText() + "," + lastNameBox.getText() + "," + dobBox.getText() +
+                            "," + genderBox.getText() + "," + username.getText() + "," + password.getText() + "," +
+                            SSNBox.getText() + "," + emailBox.getText() + "," + SSNBox.getText() + "," + phoneNumberBox.getText()
+                            + ","+photopath2;
+                    olderLines += "\n" + line;
+                    count++;
+                    PrintWriter rewrite2 = null;
+                    try {
+                        rewrite2 = new PrintWriter("LoginInformation.txt");
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    rewrite2.print(olderLines);
+                    rewrite2.close();
+                    System.out.print("new person added to file");
+                    String message2="new person added to file";
+                    try {
+                        SignUp(primaryStage,message2);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
             else
             {
-                System.out.println("move this to text file");
-                 String line;
-                Scanner scan = new Scanner(System.in);
-
-                PrintWriter textStream = Controller.createTextWrite(File);
-                System.out.println("Enter 4 lines of text:");
-                //l
-                line =firstNameBox.getText() + "," + lastNameBox.getText() + "," + dobBox.getText() +
-                        "," + genderBox.getText()+ "," + username.getText() + "," + password.getText() + "," +
-                        emailBox.getText() + "," + SSNBox.getText()+","+emailBox.getText()+","+SSNBox.getText()
-                +","+phoneNumberBox.getText()+",";
-                textStream.println(line);
-
-                textStream.close(); // did not require error handling
-                System.out.println("Those lines were written to " + File);
-                System.out.println();
-                System.out.print("Now we will read them from " + File + " using the ");
-                System.out.println("Scanner class.");
-
-                Scanner scanFile = Controller.createTextRead(File);// scan a file
-                //count = scanFile.nextInt();
-                line = scanFile.nextLine();
-                System.out.println(line);
-                scanFile.close();
-                accountCreated(primaryStage);
+                System.out.println("password and confirm password dont match");
+                String message2="passwords don't match";
+                try {
+                    SignUp(primaryStage,message2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
-        GridPane.setConstraints(SignIn,2,7);//row,column
-
-        addPhoto= new Button("Add Photo");
-        addPhoto.setOnAction(event ->
-        {
-            System.out.println("Adding pictures to file");
-            //ImageIcon applePicture = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource ("apple.jpg"))
-            //.getImage().getScaledInstance(100, 90, Image.SCALE_DEFAULT));
-        });
-        GridPane.setConstraints(addPhoto,3,7);//row,column
-        g.getChildren().addAll(emailLabel, emailBox,SSNBox, SSNLabel,SignIn, addPhoto,
-        phoneNumberBox, phoneNumberLabel);
+        GridPane.setConstraints(SignIn,2,10);//row, column
+        GridPane.setConstraints(photoPathBox,2,12);//row,column
+        g.getChildren().addAll( firstNameBox, lastNameBox, dobBox
+        ,genderBox,username,password,confirmPasswordBox,SignIn, addPhoto,photoPathBox, emailBox, SSNBox);
         StackPane layout= new StackPane();
         layout.getChildren().add(g);
-        Scene scene= new Scene(layout, 500, 350);//width by height of window
+        Scene scene= new Scene(layout, 300, 550);//width by height of window
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
     private void accountCreated(Stage primaryStage)
     {
         System.out.println("account Created method");
@@ -362,7 +359,6 @@ public class Controller implements  EventHandler<ActionEvent>//implements EventH
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setHgap(8);//height for button space
         grid.setVgap(18);//length for button space
-
         GridPane.setConstraints(firstNameLabel, 0, 0);//row by column
         SignIn.setOnAction(e->
                 {
@@ -370,7 +366,6 @@ public class Controller implements  EventHandler<ActionEvent>//implements EventH
                 }
         );
         GridPane.setConstraints(SignIn, 0, 2);//row by column
-
         grid.getChildren().addAll(firstNameLabel,SignIn);
         StackPane layout= new StackPane();
         layout.getChildren().add(grid);
@@ -378,7 +373,6 @@ public class Controller implements  EventHandler<ActionEvent>//implements EventH
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
     public static PrintWriter createTextWrite(String S)
     {
         PrintWriter TStream=null;
@@ -409,34 +403,4 @@ public class Controller implements  EventHandler<ActionEvent>//implements EventH
         }
         return textFile;
     }
-    public void incorrectLogin(Stage primaryStage)
-    {
-            primaryStage.setTitle("Incorrect");
-            firstNameLabel = new Label("password invalid. Please retry.");
-            SignIn= new Button("OK");
-            GridPane grid = new GridPane();//space for buttons
-            grid.setPadding(new Insets(10, 10, 10, 10));
-            grid.setHgap(8);//height for button space
-            grid.setVgap(18);//length for button space
-            GridPane.setConstraints(firstNameLabel, 0, 0);//row by column
-            SignIn.setOnAction(e->
-                    {
-                        try
-                        {
-                            LogIn(primaryStage);
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-            );
-            GridPane.setConstraints(SignIn, 0, 2);//row by column
-            grid.getChildren().addAll(firstNameLabel,SignIn);
-            StackPane layout= new StackPane();
-            layout.getChildren().add(grid);
-            Scene scene= new Scene(layout, 300, 100);//width by height of window
-            primaryStage.setScene(scene);
-            primaryStage.show();
-    }
-    @Override
-    public void handle(ActionEvent event) {}
 }
