@@ -8,15 +8,10 @@ import java.util.Scanner;
 public class userClass extends Person //implements EventHandler<ActionEvent>
 {
    private String profilePhoto;
-    //protected Stage primaryStage;
    private String UserName;
    private String email;
-   private String phoneNumber;/* (country code + area code + phone number)*/
+   private String phoneNumber;
    private String passWord;
-
-//   TextField username, password, firstNameBox, lastNameBox, dobBox
-//           , genderBox, usernameBox, passwordBox, confirmPasswordBox;
-//   Button logIn, SignUp, SignIn;
 
    public userClass()
    {
@@ -147,6 +142,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
         System.out.println();
             if(newLine.equals(passedInLine)&&Count==commaCount)
                 return true;//if it returns true then the signup information matches a line in the text file
+            //which means the user would have to sign up again
             else
                 return false;
     }
