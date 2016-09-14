@@ -1,6 +1,4 @@
 package sample;
-import javafx.event.ActionEvent;
-
 import java.util.Scanner;
 
 public class Person //extends Application
@@ -110,16 +108,16 @@ public class Person //extends Application
             if(line.substring(t,t+1).contains(","))//if there's a comma count if and also add it to the new string
             {
                 newLine+=line.substring(t,t+1);
-                System.out.println(newLine+"= newLine");
+                //System.out.println(newLine+"= newLine");
                 commaCount++;
-                System.out.println(commaCount+" commas in the String from the file");
+                //System.out.println(commaCount+" commas in the String from the file");
             }
             else if(!line.substring(t,t+1).contains(","))
             {//add other found characters into the string
                 newLine+=line.substring(t,t+1);
-                System.out.println(newLine+"= newLine");
+                //System.out.println(newLine+"= newLine");
             }
-            System.out.println("newLine=="+newLine);
+            //System.out.println("newLine=="+newLine);
             if(newLine.equals(passedInLine)&&Count==commaCount)
             {//if the strings and number of commas in each string match stop the loop and compare the two
                 t=line.length();
