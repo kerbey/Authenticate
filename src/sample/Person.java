@@ -86,7 +86,7 @@ public class Person //extends Application
         String line = "";
 
         Scanner scanFile = Controller.createTextRead(File);// scan a file
-        //for(int r=0;r<Controller.count;r++) {
+        for(int r=0;r<Controller.count;r++) {
             line = scanFile.nextLine();
             System.out.println("line has ====" + line);
             System.out.println(line.length());
@@ -131,12 +131,12 @@ public class Person //extends Application
                 return true;
             else
                 return false;
-        //}
-        //return false;
+        }
+        return false;
     }
 
 
-    public void login() {
-        System.out.println("hello");
-    }
+//    public void login() {
+//        System.out.println("hello");
+//    }
 }
