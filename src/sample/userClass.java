@@ -100,7 +100,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
 
             Scanner scanFile = Controller.createTextRead(File);// scan a file
             line = scanFile.nextLine();
-            System.out.println("line has ===="+line);
+            //System.out.println("line has ===="+line);
             System.out.println(line.length());
 
 
@@ -111,7 +111,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
                 if(passedInLine.substring(n,n+1).contains(","))
                 {
                     Count++;
-                    System.out.println(Count+" commas in the String that got passed in");
+                    //System.out.println(Count+" commas in the String that got passed in");
                 }
             }
 
@@ -121,26 +121,28 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
                 if(line.substring(t,t+1).contains(","))//if there's a comma count if and also add it to the new string
                 {
                     newLine+=line.substring(t,t+1);
-                    System.out.println(newLine+"= newLine");
+                    //System.out.println(newLine+"= newLine");
                     commaCount++;
-                    System.out.println(commaCount+" commas in the String from the file");
+                    //System.out.println(commaCount+" commas in the String from the file");
                 }
                 else if(!line.substring(t,t+1).contains(","))
                 {//add other found characters into the string
                     newLine+=line.substring(t,t+1);
-                    System.out.println(newLine+"= newLine");
+                   // System.out.println(newLine+"= newLine");
                 }
-                System.out.println("newLine=="+newLine);
-                if(newLine.equals(passedInLine)&&Count==commaCount)
+                //System.out.println("newLine=="+newLine);
+                if(newLine.contains(passedInLine)&&Count==commaCount)
                 {//if the strings and number of commas in each string match stop the loop and compare the two
                     t=line.length();
                     System.out.println("both strings you're comparing are equal");
                 }
             }
             scanFile.close();
+        System.out.println("newLine=="+newLine);
+        System.out.println("passedInLine=="+passedInLine);
         System.out.println();
         System.out.println();
-            if(newLine.equals(passedInLine)&&Count==commaCount)
+            if(newLine.contains(passedInLine)&&Count==commaCount)
                 return true;//if it returns true then the signup information matches a line in the text file
             //which means the user would have to sign up again
             else
