@@ -18,7 +18,7 @@ import java.util.Scanner;
 public class Controller
 {
     String line = "";Scanner scanFile;String File = "LoginInformation.txt";
-    int count=0;
+    static int count=0;
     TextField username, password, firstNameBox, lastNameBox, dobBox, emailBox,genderBox, confirmPasswordBox, SSNBox,
             phoneNumberBox, photoPathBox;
     Button logIn, SignUp, SignIn, addPhoto;
