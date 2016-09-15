@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import java.io.*;
 import java.util.Scanner;
 /**
@@ -16,11 +17,13 @@ import java.util.Scanner;
  */
 public class Controller
 {
-    String line = "";Scanner scanFile;int count=0;String File = "LoginInformation.txt";
+    String line = "";Scanner scanFile;String File = "LoginInformation.txt";
+    int count=0;
     TextField username, password, firstNameBox, lastNameBox, dobBox, emailBox,genderBox, confirmPasswordBox, SSNBox,
             phoneNumberBox, photoPathBox;
     Button logIn, SignUp, SignIn, addPhoto;
     Label firstNameLabel;
+    String compareLine="";//string made for the username on the line
     static public String photopath;
 
     public void LogIn(Stage primaryStage,String message) throws IOException {
@@ -46,6 +49,7 @@ public class Controller
         GridPane.setConstraints(username,0,1);//row by column
         GridPane.setConstraints(password,0,2);//row by column
         GridPane.setConstraints(confirmPasswordBox,0,3);//row by column
+
         logIn= new Button("Login");
         logIn.setOnAction(event ->
                 {
@@ -57,9 +61,9 @@ public class Controller
                         count = scanFile.nextInt();
                         for(int n=0;n<count;n++)
                         {//for loop for going through multiple lines in a text file
-                            String compareLine="";//string made for the username on the line
+                            compareLine="";//string made for the username on the line
                             line = scanFile.nextLine();
-                            System.out.println("line=="+line);
+                            //System.out.println("line=="+line);
                             int commaCount=0;
                             for(int m=0;m<line.length();m++)
                             {//for loop for going through multiple characters in a text file line
@@ -69,7 +73,7 @@ public class Controller
                                     commaCount++;
                                     if(commaCount!=5)
                                     {
-                                        System.out.println("compareLine 5=="+compareLine);
+                                        //System.out.println("compareLine 5=="+compareLine);
                                         compareLine = "";
                                     }
                                     else if(commaCount>5)
@@ -80,12 +84,14 @@ public class Controller
                                else if(!line.substring(m,m+1).contains(",") && commaCount>3)
                                 {//adds other characters to the string we'll be comparing
                                         compareLine += line.substring(m, m + 1);
-                                    System.out.println("compareLine=="+compareLine);
+                                    //System.out.println("compareLine=="+compareLine);
                                 }
                             }//this if else statement compares entered in username and password with the one from the
                             //textfile
-                            if (line.contains(compareLine)) {
-                                //System.out.println("password confirmed welcome");
+                            if (line.equals(compareLine)) {
+                                //System.out.println("Line=="+line);
+                                //System.out.println("compareLine=="+compareLine);
+                                System.out.println("username and password confirmed welcome");
                                 String message2="Welcome user.";
                                 try {
                                     LogIn(primaryStage, message2);//ogIn(primaryStage, message2);
@@ -93,9 +99,13 @@ public class Controller
                                     e.printStackTrace();
                                 }
                                 n=line.length();
-                                } else if (!line.contains(compareLine)) {
-                                    //System.out.println("password and confirm password match but not found in file");
-                                String message2="incorrect password";
+                                } else if (!line.equals(compareLine)) {
+//                                System.out.println("Line=="+line);
+//                                System.out.println("compareLine=="+compareLine);
+                                System.out.println("username incorrect");
+
+                                //System.out.println("password and confirm password match but not found in file");
+                                String message2="incorrect username";
                                 try {
                                     LogIn(primaryStage, message2);
                                 } catch (IOException e) {
@@ -104,11 +114,13 @@ public class Controller
                                     n = line.length();
                                 }
                         }
-                        System.out.println(line);
+                        //System.out.println(line);
                         scanFile.close();
                     }
                     else
                     {
+//                        System.out.println("Line=="+line);
+//                        System.out.println("compareLine=="+compareLine);
                         System.out.println("password and confirm password don't match");
                        String message2="incorrect password";
                         try {
@@ -268,15 +280,67 @@ public class Controller
                     lastNameBox.getText());
             Boolean answer= p.Compare(firstNameBox.getText(),genderBox.getText(),dobBox.getText(),SSNBox.getText(),
                     lastNameBox.getText());
-            //System.out.println("Boolean answer is "+answer);
+            System.out.println("Boolean answer is "+answer);
             //go to asnwer class to see if username email phonenumber and password match and to see if usernames
             //match with any others
             userClass u= new userClass(username.getText(), emailBox.getText(), phoneNumberBox.getText(),
                     password.getText());
             Boolean answer2= u.Compare2(username.getText(), emailBox.getText(), phoneNumberBox.getText()
                     , password.getText());
-            //System.out.println("Boolean answer2 is "+answer2);
-            if(password.getText().contains(confirmPasswordBox.getText())
+            System.out.println("Boolean answer2 is "+answer2);
+
+            if(SSNBox.getText().length()!=9)
+            {
+                System.out.println("incorrect length of social security");
+                String message2="incorrect length of social security";
+                try {
+                    SignUp(primaryStage,message2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else if(phoneNumberBox.getText().length()!=9)
+            {
+                System.out.println("incorrect length of phone number");
+                String message2="incorrect length of phone number";
+                try {
+                    SignUp(primaryStage,message2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            //genderBox.setText(genderBox.getText().toLowerCase());
+            else if(!genderBox.getText().toLowerCase().contains("male")
+                    &&!genderBox.getText().toLowerCase().contains("female"))
+            {
+                System.out.println("gender incorrect");
+                String message2="please enter male or female";
+                try {
+                    SignUp(primaryStage,message2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else if(!emailBox.getText().contains("@") && !emailBox.getText().contains(".com")
+            && !emailBox.getText().contains(".net") &&!emailBox.getText().contains(".org") )
+            {//email must have these charcters
+                System.out.println("invalid EMAIL");
+                String message2="invalid email";
+                try {
+                    SignUp(primaryStage,message2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else if(password.getText().contains(confirmPasswordBox.getText())
                 && passwordcheck(password.getText())==true)//continue if password and confirm password are matching
             {
                 if ((answer.equals(true) && answer2.equals(true)) || (answer.equals(false) && answer2.equals(true)))
@@ -295,18 +359,18 @@ public class Controller
                     scanFile = Controller.createTextRead(File);// scan a file
                     String olderLines = "";
                     olderLines += scanFile.nextLine();
-                    System.out.println(" olderLines==" + olderLines);
+                    //System.out.println(" olderLines==" + olderLines);
                     System.out.println();
                     for (int n = 1; n < count; n++) {//for loop for going through multiple lines in a text file to add to a string
                         //that will get reprinted
                         olderLines += "\n" + scanFile.nextLine();
-                        System.out.println("loop, olderLines==" + olderLines);
+                        //System.out.println("loop, olderLines==" + olderLines);
                         System.out.println();
                     }
                     line = count+1 + " " + firstNameBox.getText() + "," + lastNameBox.getText() + "," + dobBox.getText() +
                             "," + genderBox.getText() + "," + username.getText() + "," + password.getText() + "," +
-                            SSNBox.getText() + "," + emailBox.getText() + "," + SSNBox.getText() + "," + phoneNumberBox.getText()
-                            + ","+photoPathBox.getText();
+                            SSNBox.getText() + "," + emailBox.getText() + "," + SSNBox.getText() + "," +
+                            phoneNumberBox.getText() + ","+photoPathBox.getText();
                     olderLines += "\n" + line;
                     count++;
                     PrintWriter rewrite2 = null;
@@ -331,7 +395,7 @@ public class Controller
             else
             {
                 System.out.println("password and confirm password dont match");
-                String message2="passwords don't match";
+                String message2="passwords are invalid/don't match";
                 try {
                     SignUp(primaryStage,message2);
                 } catch (IOException e) {
