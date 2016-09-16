@@ -1,5 +1,6 @@
 package sample;
 
+import java.io.*;
 import java.util.Scanner;
 
 /**
@@ -18,7 +19,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
       System.out.println("userClass default constructor");
    }
 
-   public userClass(/*String profilePhoto,*/ String UserName, String email, String phoneNumber, String passWord)
+   public userClass( String UserName, String email, String phoneNumber, String passWord, String profilePhoto)
    {
       this.profilePhoto=profilePhoto;
       this.UserName=UserName;
@@ -87,65 +88,85 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
       this.profilePhoto = profilePhoto;
    }
 
-
-    public Boolean Compare2(String text, String text1, String text2, String text3)
+    public Boolean Compare2(String passedInpassword)
     {
         System.out.println();
         System.out.println();
-            String passedInLine= text+","+text1+","+text2+","+text3;
-            System.out.println(" userClass Compare2");
+        System.out.println(" Person Compare method");
 
-            String File = "LoginInformation.txt";
-            String line = "";
+        String File = "LoginInformation.txt";
+        String line = "";
 
-            Scanner scanFile = Controller.createTextRead(File);// scan a file
+        Scanner scanFile = Controller.createTextRead(File);// scan a file
+        for(int r=0;r<Controller.count;r++) {
             line = scanFile.nextLine();
-            //System.out.println("line has ===="+line);
+            System.out.println("line has ====" + line);
             System.out.println(line.length());
-
-
-            String newLine="";
-            int Count=0;
-            for(int n=0;n<passedInLine.length();n++)//scan line that was passed in to count the number of commas
+            if(line.contains(passedInpassword))
             {
-                if(passedInLine.substring(n,n+1).contains(","))
-                {
-                    Count++;
-                    //System.out.println(Count+" commas in the String that got passed in");
-                }
+                return true;
             }
+        }
+        return false;
+    }
+    public void insert(String File)
+    {
+        System.out.println("now inserting info to file");
+        Scanner scanFile = Controller.createTextRead(File);// scan a file
+        String olderLines = "";
+        olderLines += scanFile.nextLine();
+        //System.out.println(" olderLines==" + olderLines);
+        System.out.println();
+        for (int n = 1; n < Controller.count; n++) {
+            //for loop for going through multiple lines in a text file to add to a string that will get reprinted
+            olderLines += "\n" + scanFile.nextLine();
+            //System.out.println("loop, olderLines==" + olderLines);
+            System.out.println();
+        }
+        String line = Controller.count+1+" "+getFirstName()+","+getLastName()+","+getDob()+","+getGender()
+        +","+getUserName()+","+getPassWord()+","+getSS()+","+getPhoneNumber()+","+getProfilePhoto();
 
-            int commaCount=0;
-            for(int t=0;t<line.length();t++)//this line counts the number of commas found in the line of the scanned file
-            {
-                if(line.substring(t,t+1).contains(","))//if there's a comma count if and also add it to the new string
-                {
-                    newLine+=line.substring(t,t+1);
-                    //System.out.println(newLine+"= newLine");
-                    commaCount++;
-                    //System.out.println(commaCount+" commas in the String from the file");
-                }
-                else if(!line.substring(t,t+1).contains(","))
-                {//add other found characters into the string
-                    newLine+=line.substring(t,t+1);
-                   // System.out.println(newLine+"= newLine");
-                }
-                //System.out.println("newLine=="+newLine);
-                if(newLine.contains(passedInLine)&&Count==commaCount)
-                {//if the strings and number of commas in each string match stop the loop and compare the two
-                    t=line.length();
-                    System.out.println("both strings you're comparing are equal");
-                }
-            }
-            scanFile.close();
-        System.out.println("newLine=="+newLine);
-        System.out.println("passedInLine=="+passedInLine);
-        System.out.println();
-        System.out.println();
-            if(newLine.contains(passedInLine)&&Count==commaCount)
-                return true;//if it returns true then the signup information matches a line in the text file
-            //which means the user would have to sign up again
-            else
-                return false;
+        olderLines += "\n" + line;
+        Controller.count++;
+        PrintWriter rewrite2 = null;
+        try {
+            rewrite2 = new PrintWriter("LoginInformation.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        rewrite2.print(olderLines);
+        rewrite2.close();
+        System.out.print("new person added to file");
+
+    }
+    public static PrintWriter createTextWrite(String S)
+    {
+        PrintWriter TStream=null;
+        try
+        {
+            System.out.println("createTextWrite sucessful");
+            TStream= new PrintWriter(new FileOutputStream(S));
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("Error opening the file in createTextWrite "+S.toString());
+            System.exit(0);
+        }
+        return TStream;
+    }
+    public static Scanner createTextRead(String S)
+    {
+        Scanner textFile=null;
+        try
+        {
+            System.out.println("createTextRead sucessful");
+            textFile=new Scanner(new FileInputStream(new File(S)));
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("File not found "+S.toString());
+            System.out.println("or could not be opened."+S.toString());
+        }
+        return textFile;
     }
 }
