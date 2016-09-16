@@ -196,7 +196,7 @@ public class Controller
     {
         Countfilelines();
         System.out.println("Controller Class sign up method.");
-        System.out.print("Count=="+count);
+        //System.out.print("Count=="+count);
         primaryStage.setTitle(message);
         firstNameBox= new TextField();
         firstNameBox.setPromptText("enter firstname");
@@ -275,24 +275,25 @@ public class Controller
 
         SignIn= new Button("Create Account");
         SignIn.setOnAction(event ->
-        {//go to person class to see if first and last name gender date of birth and social security number
-            Person p = new Person(firstNameBox.getText(),genderBox.getText(),dobBox.getText(),SSNBox.getText(),
-                    lastNameBox.getText());
-            Boolean answer= p.Compare(firstNameBox.getText(),genderBox.getText(),dobBox.getText(),SSNBox.getText(),
-                    lastNameBox.getText());
-            System.out.println("Boolean answer is "+answer);
-            //go to asnwer class to see if username email phonenumber and password match and to see if usernames
-            //match with any others
-            userClass u= new userClass(username.getText(), emailBox.getText(), phoneNumberBox.getText(),
-                    password.getText());
-            Boolean answer2= u.Compare2(username.getText(), emailBox.getText(), phoneNumberBox.getText()
-                    , password.getText());
-            System.out.println("Boolean answer2 is "+answer2);
-
-            if(SSNBox.getText().length()!=9)
+        {
+            if(SSNBox.getText().length()!=9 || !SSNBox.getText().matches(".*\\d.*"))
             {
-                System.out.println("incorrect length of social security");
-                String message2="incorrect length of social security";
+                System.out.println("must have 9 digits in social security number");
+                String message2="must have 9 digits in social security number";
+                try {
+                    SSNBox.setText("");
+                    SignUp(primaryStage,message2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if(phoneNumberBox.getText().length()!=9 || !phoneNumberBox.getText().matches(".*\\d.*"))
+            {
+                phoneNumberBox.setText("");
+                System.out.println("must have 9 digits in phone number");
+                String message2="must have 9 digits in phone number";
                 try {
                     SignUp(primaryStage,message2);
                 } catch (IOException e) {
@@ -301,22 +302,10 @@ public class Controller
                     e.printStackTrace();
                 }
             }
-            else if(phoneNumberBox.getText().length()!=9)
+            genderBox.setText(genderBox.getText().toLowerCase());
+            if(!genderBox.getText().contains("male") &&!genderBox.getText().contains("female"))
             {
-                System.out.println("incorrect length of phone number");
-                String message2="incorrect length of phone number";
-                try {
-                    SignUp(primaryStage,message2);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            //genderBox.setText(genderBox.getText().toLowerCase());
-            else if(!genderBox.getText().toLowerCase().contains("male")
-                    &&!genderBox.getText().toLowerCase().contains("female"))
-            {
+                genderBox.setText("");
                 System.out.println("gender incorrect");
                 String message2="please enter male or female";
                 try {
@@ -327,12 +316,13 @@ public class Controller
                     e.printStackTrace();
                 }
             }
-            else if(!emailBox.getText().contains("@") && !emailBox.getText().contains(".com")
-            && !emailBox.getText().contains(".net") &&!emailBox.getText().contains(".org") )
+            if(!emailBox.getText().contains("@") && (!emailBox.getText().contains(".com")
+            || !emailBox.getText().contains(".net") || !emailBox.getText().contains(".org")))
             {//email must have these charcters
-                System.out.println("invalid EMAIL");
+                    System.out.println("invalid EMAIL");
                 String message2="invalid email";
                 try {
+                    emailBox.setText("");
                     SignUp(primaryStage,message2);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -340,48 +330,35 @@ public class Controller
                     e.printStackTrace();
                 }
             }
-            else if(password.getText().contains(confirmPasswordBox.getText())
+            if(password.getText().equals(confirmPasswordBox.getText())
                 && passwordcheck(password.getText())==true)//continue if password and confirm password are matching
-            {
-                if ((answer.equals(true) && answer2.equals(true)) || (answer.equals(false) && answer2.equals(true)))
-                {//if signup username and username on list are same then dont write to file//and enter a different one
+            {//and are in the correct format
+                //go to person class to see if first and last name gender date of birth and social security number
+                Person p = new Person(firstNameBox.getText(),genderBox.getText(),dobBox.getText(),SSNBox.getText(),
+                        lastNameBox.getText());
+                //go to asnwer class to see if username email phonenumber and password match and to see if usernames
+                //match with any others
+                userClass u= new userClass(username.getText(), emailBox.getText(), phoneNumberBox.getText(),
+                        password.getText(), photoPathBox.getText());
+                Boolean answer= u.Compare2(password.getText());
+                System.out.println("Boolean answer2 is "+answer);
+
+                if (answer.equals(true))// && answer2.equals(true)) || (answer.equals(false) && answer2.equals(true)))
+                {//if signup username and username on list are same/marked true then dont write to file//and enter
+                 //a different one
                     System.out.println("incorrect");
                     String message2="info already exists try again";
                     try {
+                        password.setText("");
+                        confirmPasswordBox.setText("");
                         SignUp(primaryStage,message2);
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                } else {
-                   // System.out.println("move this to text file");
-                    scanFile = Controller.createTextRead(File);// scan a file
-                    String olderLines = "";
-                    olderLines += scanFile.nextLine();
-                    //System.out.println(" olderLines==" + olderLines);
-                    System.out.println();
-                    for (int n = 1; n < count; n++) {//for loop for going through multiple lines in a text file to add to a string
-                        //that will get reprinted
-                        olderLines += "\n" + scanFile.nextLine();
-                        //System.out.println("loop, olderLines==" + olderLines);
-                        System.out.println();
-                    }
-                    line = count+1 + " " + firstNameBox.getText() + "," + lastNameBox.getText() + "," + dobBox.getText() +
-                            "," + genderBox.getText() + "," + username.getText() + "," + password.getText() + "," +
-                            SSNBox.getText() + "," + emailBox.getText() + "," + SSNBox.getText() + "," +
-                            phoneNumberBox.getText() + ","+photoPathBox.getText();
-                    olderLines += "\n" + line;
-                    count++;
-                    PrintWriter rewrite2 = null;
-                    try {
-                        rewrite2 = new PrintWriter("LoginInformation.txt");
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    rewrite2.print(olderLines);
-                    rewrite2.close();
-                    System.out.print("new person added to file");
+                } else {//if not found or everything is marked false then data can be written to file
+                    u.insert(File);
                     String message2="new person added to file";
                     try {
                         SignUp(primaryStage,message2);
@@ -392,11 +369,13 @@ public class Controller
                     }
                 }
             }
-            else
-            {
+            if(!(password.getText().equals(confirmPasswordBox.getText())))//|| passwordcheck(password.getText())==false)
+            {//if password isnt confirmed or doesnt have required characters its invalid
                 System.out.println("password and confirm password dont match");
-                String message2="passwords are invalid/don't match";
+                String message2="passwords invalid or don't match";
                 try {
+                    password.setText("");
+                    confirmPasswordBox.setText("");
                     SignUp(primaryStage,message2);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -415,30 +394,7 @@ public class Controller
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-    private void accountCreated(Stage primaryStage)
-    {
-        System.out.println("account Created method");
-        primaryStage.setTitle("Account Created");
-        firstNameLabel = new Label("Account now on list");
-        SignIn= new Button("OK");
-        GridPane grid = new GridPane();//space for buttons
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setHgap(8);//height for button space
-        grid.setVgap(18);//length for button space
-        GridPane.setConstraints(firstNameLabel, 0, 0);//row by column
-        SignIn.setOnAction(e->
-                {
-                    System.exit(0);
-                }
-        );
-        GridPane.setConstraints(SignIn, 0, 2);//row by column
-        grid.getChildren().addAll(firstNameLabel,SignIn);
-        StackPane layout= new StackPane();
-        layout.getChildren().add(grid);
-        Scene scene= new Scene(layout, 300, 100);//width by height of window
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
+
     public static PrintWriter createTextWrite(String S)
     {
         PrintWriter TStream=null;
