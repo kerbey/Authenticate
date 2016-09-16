@@ -98,7 +98,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
         String line = "";
 
         Scanner scanFile = Controller.createTextRead(File);// scan a file
-        for(int r=0;r<Controller.count;r++) {
+        for(int r=0;r<Controller.count-1;r++) {
             line = scanFile.nextLine();
             System.out.println("line has ====" + line);
             System.out.println(line.length());
@@ -117,7 +117,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
         olderLines += scanFile.nextLine();
         //System.out.println(" olderLines==" + olderLines);
         System.out.println();
-        for (int n = 1; n < Controller.count; n++) {
+        for (int n = 1; n < Controller.count-1; n++) {
             //for loop for going through multiple lines in a text file to add to a string that will get reprinted
             olderLines += "\n" + scanFile.nextLine();
             //System.out.println("loop, olderLines==" + olderLines);
