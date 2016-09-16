@@ -330,6 +330,19 @@ public class Controller
                     e.printStackTrace();
                 }
             }
+            if(photoPathBox.getText().equals(null))
+            {
+                System.out.println("please add photo");
+                String message2="please add photo";
+                try {
+                    emailBox.setText("");
+                    SignUp(primaryStage,message2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             if(password.getText().equals(confirmPasswordBox.getText())
                 && passwordcheck(password.getText())==true)//continue if password and confirm password are matching
             {//and are in the correct format
