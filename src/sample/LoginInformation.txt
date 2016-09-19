@@ -1,0 +1,9 @@
+1 mike,joe,11/11/11,male,dsjgjsdkg,Cqwr!@1,123899333,q@email.com,123899333,838928888,/Users/kerbeychevalier/Pictures/apple copy.jpg
+2 jk,jk,2/23/23,male,dsgsgsd,Aqwer!1,1231284891,w@email.com,1231284891,325892399,/Users/kerbeychevalier/Pictures/Broccoli.jpg
+3 a,as,1/1/13,female,asdgsag,Awe1!,456234266,q@email.com,456234266,123546642,/Users/kerbeychevalier/Pictures/apple.jpg
+4 wer,at,1/11/23,male,eweqklrw,Awe1!,2348999,@email.com,2348999,34581899,/Users/kerbeychevalier/Pictures/apple copy.jpg,
+5 fred,jakes,12/1/11,male,dskgjsdgkla,Caetqio@1,394829011,fred@email.com,394829011,493023990,/Users/kerbeychevalier/Pictures/carrots.jpg
+6 as,as,11/11/11,male,sdgsdgk,Erthrsrh!@1,482959902,w@email.com,482959902,473828899,/Users/kerbeychevalier/Pictures/carrots.jpg
+7 gg,asdf,4/4/44,male,tyoteywp,Adhkweoh#3,405933250,gg@email.com,405933250,402950392,/Users/kerbeychevalier/Pictures/Banana.jpg
+8 wer,jef,3/3/33,male,dsfsdgs,Ew@3dgdgss,543295693,wer@email.com,543295693,543295693,/Users/kerbeychevalier/Pictures/apple copy.jpg
+9 jkj,k,8/8/88,male,hjhkjhg,L9%rgfghjfg,657456734,k@email.com,657456734,777453267,/Users/kerbeychevalier/Pictures/Banana.jpg
