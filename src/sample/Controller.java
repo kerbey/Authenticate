@@ -281,7 +281,7 @@ public class Controller
                 System.out.println("must have 9 digits in social security number");
                 String message2="must have 9 digits in social security number";
                 try {
-                    SSNBox.setText("");
+                    //SSNBox.setText("");
                     SignUp(primaryStage,message2);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -290,8 +290,8 @@ public class Controller
                 }
             }
             if(phoneNumberBox.getText().length()!=9 || !phoneNumberBox.getText().matches(".*\\d.*"))
-            {
-                phoneNumberBox.setText("");
+            {//
+                //phoneNumberBox.setText("");
                 System.out.println("must have 9 digits in phone number");
                 String message2="must have 9 digits in phone number";
                 try {
@@ -305,7 +305,7 @@ public class Controller
             genderBox.setText(genderBox.getText().toLowerCase());
             if(!genderBox.getText().contains("male") &&!genderBox.getText().contains("female"))
             {
-                genderBox.setText("");
+                //genderBox.setText("");
                 System.out.println("gender incorrect");
                 String message2="please enter male or female";
                 try {
@@ -322,7 +322,7 @@ public class Controller
                     System.out.println("invalid EMAIL");
                 String message2="invalid email";
                 try {
-                    emailBox.setText("");
+                   // emailBox.setText("");
                     SignUp(primaryStage,message2);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -330,7 +330,7 @@ public class Controller
                     e.printStackTrace();
                 }
             }
-            if(photoPathBox.getText().equals(null))
+            /*if(photoPathBox.getText().contains(null))
             {
                 System.out.println("please add photo");
                 String message2="please add photo";
@@ -342,28 +342,28 @@ public class Controller
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
             if(password.getText().equals(confirmPasswordBox.getText())
                 && passwordcheck(password.getText())==true)//continue if password and confirm password are matching
             {//and are in the correct format
                 //go to person class to see if first and last name gender date of birth and social security number
-                Person p = new Person(firstNameBox.getText(),genderBox.getText(),dobBox.getText(),SSNBox.getText(),
-                        lastNameBox.getText());
+//                Person p = new Person(firstNameBox.getText(),genderBox.getText(),dobBox.getText(),SSNBox.getText(),
+//                        lastNameBox.getText());
                 //go to asnwer class to see if username email phonenumber and password match and to see if usernames
                 //match with any others
                 userClass u= new userClass(username.getText(), emailBox.getText(), phoneNumberBox.getText(),
-                        password.getText(), photoPathBox.getText());
+                        password.getText(), photoPathBox.getText(), firstNameBox.getText(),genderBox.getText(),
+                        dobBox.getText(),SSNBox.getText(), lastNameBox.getText());
                 Boolean answer= u.Compare2(password.getText());
                 System.out.println("Boolean answer2 is "+answer);
-
                 if (answer.equals(true))// && answer2.equals(true)) || (answer.equals(false) && answer2.equals(true)))
                 {//if signup username and username on list are same/marked true then dont write to file//and enter
                  //a different one
                     System.out.println("incorrect");
                     String message2="info already exists try again";
                     try {
-                        password.setText("");
-                        confirmPasswordBox.setText("");
+                       // password.setText("");
+                        //confirmPasswordBox.setText("");
                         SignUp(primaryStage,message2);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -381,14 +381,15 @@ public class Controller
                         e.printStackTrace();
                     }
                 }
+                System.out.println("done.");
             }
             if(!(password.getText().equals(confirmPasswordBox.getText())))//|| passwordcheck(password.getText())==false)
             {//if password isnt confirmed or doesnt have required characters its invalid
                 System.out.println("password and confirm password dont match");
                 String message2="passwords invalid or don't match";
                 try {
-                    password.setText("");
-                    confirmPasswordBox.setText("");
+                   // password.setText("");
+                    //confirmPasswordBox.setText("");
                     SignUp(primaryStage,message2);
                 } catch (IOException e) {
                     e.printStackTrace();
