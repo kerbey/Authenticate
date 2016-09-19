@@ -96,7 +96,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
    }
 
     public Boolean Compare2(String passedInpassword)
-    {
+    {//scan file and check to see if password is in any file line
         System.out.println();
         System.out.println();
         System.out.println(" Person Compare method");
@@ -105,14 +105,16 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
         String line = "";
 
         Scanner scanFile = Controller.createTextRead(File);// scan a file
-        System.out.println(Controller.count+1+" "+getFirstName()+","+getLastName()+","+getDob()+","+getGender()
-                +","+getUserName()+","+getPassWord()+","+getSS()+","+getPhoneNumber()+","+getProfilePhoto());
-        for(int r=0;r<Controller.count-1;r++) {
+        //System.out.println(Controller.count+1+" "+getFirstName()+","+getLastName()+","+getDob()+","+getGender()
+        //        +","+getUserName()+","+getPassWord()+","+getSS()+","+getPhoneNumber()+","+getProfilePhoto());
+        for(int r=0;r<Controller.count;r++) {
             line = scanFile.nextLine();
             System.out.println("line has ====" + line);
             System.out.println(line.length());
-            if(line.contains(passedInpassword))
+            if(line.contains(passedInpassword))//|| !passedInpassword.contains(null))
             {
+                System.out.println("line already found dont copy it==");
+                r=Controller.count;
                 return true;
             }
         }
@@ -133,7 +135,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
             System.out.println();
         }
         String line = Controller.count+1+" "+getFirstName()+","+getLastName()+","+getDob()+","+getGender()
-        +","+getUserName()+","+getPassWord()+","+getSS()+","+getPhoneNumber()+","+getProfilePhoto();
+        +","+getUserName()+","+getPassWord()+","+getEmail()+","+getSS()+","+getPhoneNumber()+","+getProfilePhoto();
 
         olderLines += "\n" + line;
         Controller.count++;
@@ -146,7 +148,6 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
         rewrite2.print(olderLines);
         rewrite2.close();
         System.out.print("new person added to file");
-
     }
     public static PrintWriter createTextWrite(String S)
     {
