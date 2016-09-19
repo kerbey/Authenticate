@@ -19,13 +19,20 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
       System.out.println("userClass default constructor");
    }
 
-   public userClass( String UserName, String email, String phoneNumber, String passWord, String profilePhoto)
+   public userClass( String UserName, String email, String phoneNumber, String passWord, String profilePhoto
+   ,String firstName, String gender, String dob, String SS , String lastName)
    {
       this.profilePhoto=profilePhoto;
       this.UserName=UserName;
       this.email=email;
       this.phoneNumber=phoneNumber;
       this.passWord=passWord;
+
+       setFirstName(firstName);
+       setGender(gender);
+       setDob(dob);
+       setSS(SS);
+       setLastname(lastName);
    }
 
 
@@ -98,6 +105,8 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
         String line = "";
 
         Scanner scanFile = Controller.createTextRead(File);// scan a file
+        System.out.println(Controller.count+1+" "+getFirstName()+","+getLastName()+","+getDob()+","+getGender()
+                +","+getUserName()+","+getPassWord()+","+getSS()+","+getPhoneNumber()+","+getProfilePhoto());
         for(int r=0;r<Controller.count-1;r++) {
             line = scanFile.nextLine();
             System.out.println("line has ====" + line);
