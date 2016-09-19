@@ -6,18 +6,17 @@ public class Person //extends Application
     private String dob;
     private String SS;
     private String lastName;
-    public Person()
-    {
-    }
-
-    public Person(String firstName, String gender, String dob, String SS , String lastName)
-    {
-        this.firstName=firstName;
-        this.gender=gender;
-        this.dob=dob;
-        this.SS=SS;
-        this.lastName=lastName;
-    }
+//    public Person()
+//    {
+//    }
+//    public Person(String firstName, String gender, String dob, String SS , String lastName)
+//    {
+//        this.firstName=firstName;
+//        this.gender=gender;
+//        this.dob=dob;
+//        this.SS=SS;
+//        this.lastName=lastName;
+//    }
 
 
     public String getGender() {
@@ -25,9 +24,7 @@ public class Person //extends Application
     }
 
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+    public void setGender(String gender) {this.gender = gender;}
 
     public String getLastName() {
         return lastName;
