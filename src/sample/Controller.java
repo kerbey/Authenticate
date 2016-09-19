@@ -306,16 +306,18 @@ public class Controller
         SignIn= new Button("Create Account");
         SignIn.setOnAction(event ->
         {
+            System.out.println("Empty===="+username.getText().isEmpty());
             genderBox.setText(genderBox.getText().toLowerCase());//lower case for gender
             userClass u= new userClass(username.getText(), emailBox.getText(), phoneNumberBox.getText(),
                     password.getText(), photoPathBox.getText(), firstNameBox.getText(),genderBox.getText()
                     ,dobBox.getText(),SSNBox.getText(), lastNameBox.getText());
            Boolean passwordCheck= passwordcheck(password.getText());//password check method stored in passwordCheck
-            if (username.getText().isEmpty()||emailBox.getText().isEmpty()||phoneNumberBox.getText().isEmpty()
-                    ||phoneNumberBox.getText().isEmpty()||photoPathBox.getText().isEmpty()
-                    ||firstNameBox.getText().isEmpty()||lastNameBox.getText().isEmpty()||
-                    genderBox.getText().isEmpty() ||dobBox.getText().isEmpty()||SSNBox.getText().isEmpty()
-                    ||lastNameBox.getText().isEmpty())
+            if (username.getText().isEmpty()==true||emailBox.getText().isEmpty()==true||
+                    phoneNumberBox.getText().isEmpty()==true ||phoneNumberBox.getText().isEmpty()==true
+                    ||photoPathBox.getText().isEmpty()==true ||firstNameBox.getText().isEmpty()==true
+                    ||lastNameBox.getText().isEmpty()==true|| genderBox.getText().isEmpty()==true
+                    ||dobBox.getText().isEmpty()==true ||SSNBox.getText().isEmpty()==true ||
+                    lastNameBox.getText().isEmpty()==true)
             {
                 System.out.println("not all information is entered");
                 message2="not all information is entered";
