@@ -1,8 +1,6 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,7 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-public class Main extends Application implements EventHandler<ActionEvent>
+public class Main extends Application// implements EventHandler<ActionEvent>
 {
     Button logIn, SignUp;
     TextField username, password;
@@ -71,16 +69,16 @@ public class Main extends Application implements EventHandler<ActionEvent>
 
     }
 
-    @Override
-    public void handle(ActionEvent event)
-    {
-        if (event.getSource()==logIn)
-        {
-        }
-        else if (event.getSource() == SignUp)
-        {
-        }
-    }
+//    @Override
+//    public void handle(ActionEvent event)
+//    {
+//        if (event.getSource()==logIn)
+//        {
+//        }
+//        else if (event.getSource() == SignUp)
+//        {
+//        }
+//    }
 
     public static void main(String[] args)
     {
