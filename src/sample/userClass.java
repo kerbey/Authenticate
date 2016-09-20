@@ -95,7 +95,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
       this.profilePhoto = profilePhoto;
    }
 
-    public Boolean Compare2(String passedInpassword)
+    public boolean Compare2(String passedInpassword)
     {//scan file and check to see if password is in any file line
         System.out.println();
         System.out.println();
@@ -114,7 +114,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
             if(line.contains(passedInpassword))//|| !passedInpassword.contains(null))
             {
                 System.out.println("line already found dont copy it==");
-                r=Controller.count;
+                //r=Controller.count;
                 return true;
             }
         }
