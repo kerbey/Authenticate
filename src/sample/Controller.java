@@ -193,8 +193,9 @@ public class Controller
                 }
             }
         }
-        if(compare1==true&&compare2==true&&compare3==true)
+        if(compare1==true&&compare2==true&&compare3==true) {
             return true;//if your password has all of the required characters
+        }
         else if(compare1==false) {
             message2 = "password is missing capital letters";
             return false;
@@ -302,16 +303,32 @@ public class Controller
         });
         GridPane.setConstraints(addPhoto,2,11);//row, column
         //photopath2=photopath+"";
-
         SignIn= new Button("Create Account");
         SignIn.setOnAction(event ->
         {
-            System.out.println("Empty===="+username.getText().isEmpty());
+            //System.out.println("Empty===="+username.getText().isEmpty());
             genderBox.setText(genderBox.getText().toLowerCase());//lower case for gender
             userClass u= new userClass(username.getText(), emailBox.getText(), phoneNumberBox.getText(),
                     password.getText(), photoPathBox.getText(), firstNameBox.getText(),genderBox.getText()
                     ,dobBox.getText(),SSNBox.getText(), lastNameBox.getText());
-           Boolean passwordCheck= passwordcheck(password.getText());//password check method stored in passwordCheck
+           //Boolean passwordCheck= passwordcheck(password.getText());//password check method stored in passwordCheck
+           // System.out.println("username get text=="+username.getText());
+            //System.out.println(u.getUserName());
+
+            if(u.Compare2(username.getText()) == true&&username.getText().isEmpty()==false)
+            {
+                System.out.println("username already used");
+                 message2="username already used";
+                try {
+                    username.setText("");
+                    SignUp(primaryStage,message2);
+                    return;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             if (username.getText().isEmpty()==true||emailBox.getText().isEmpty()==true||
                     phoneNumberBox.getText().isEmpty()==true ||phoneNumberBox.getText().isEmpty()==true
                     ||photoPathBox.getText().isEmpty()==true ||firstNameBox.getText().isEmpty()==true
@@ -323,26 +340,13 @@ public class Controller
                 message2="not all information is entered";
                 try {
                     SignUp(primaryStage,message2);
+                    return;
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            if(u.Compare2(username.getText()).equals(true))
-            {
-                System.out.println("username already used");
-                 message2="username already used";
-                try {
-                    SSNBox.setText("");
-                    SignUp(primaryStage,message2);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
             if(SSNBox.getText().length()!=9 || !SSNBox.getText().matches(".*\\d.*"))
             {
                 System.out.println("must have 9 digits in social security number");
@@ -350,6 +354,7 @@ public class Controller
                 try {
                     SSNBox.setText("");
                     SignUp(primaryStage,message2);
+                    return;
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
@@ -363,6 +368,7 @@ public class Controller
                  message2="must have 9 digits in phone number";
                 try {
                     SignUp(primaryStage,message2);
+                    return;
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
@@ -376,6 +382,7 @@ public class Controller
                  message2="please enter male or female";
                 try {
                     SignUp(primaryStage,message2);
+                    return;
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
@@ -389,6 +396,7 @@ public class Controller
                 try {
                     emailBox.setText("");
                     SignUp(primaryStage, message2);
+                    return;
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
@@ -398,11 +406,12 @@ public class Controller
             if(!emailBox.getText().contains("@") && (!emailBox.getText().contains(".com")
             || !emailBox.getText().contains(".net") || !emailBox.getText().contains(".org")))
             {//email must have these charcters
-                    System.out.println("invalid EMAIL");
-                 message2="invalid email";
+                    System.out.println("email needs @ and .net,.com,or .org");
+                 message2="email needs @ and .net,.com,or .org";
                 try {
                     emailBox.setText("");
                     SignUp(primaryStage,message2);
+                    return;
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
@@ -422,6 +431,7 @@ public class Controller
                     e.printStackTrace();
                 }
             }*/
+            Boolean passwordCheck= passwordcheck(password.getText());//password check method stored in passwordCheck
             if(password.getText().equals(confirmPasswordBox.getText())
                 && passwordCheck==true)//continue if password and confirm password are matching
             {//and are in the correct format
@@ -439,11 +449,12 @@ public class Controller
                 {//if signup username and username on list are same/marked true then dont write to file//and enter
                  //a different one
                     System.out.println("incorrect");
-                     //message2="info already exists try again";
+                     message2="info already exists try again";
                     try {
                         password.setText("");
                         confirmPasswordBox.setText("");
                         SignUp(primaryStage,message2);
+                        return;
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (Exception e) {
@@ -454,6 +465,7 @@ public class Controller
                     message2="new person added to file";
                     try {
                         SignUp(primaryStage,message2);
+                        return;
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (Exception e) {
@@ -462,14 +474,16 @@ public class Controller
                 }
                 System.out.println("done.");
             }
-            if(!(password.getText().equals(confirmPasswordBox.getText())))//|| passwordcheck(password.getText())==false)
+            if(!(password.getText().equals(confirmPasswordBox.getText()))
+                    || passwordCheck.equals(false))//|| passwordcheck(password.getText())==false)
             {//if password isnt confirmed or doesnt have required characters its invalid
                 System.out.println("password and confirm password dont match");
-                message2="passwords invalid or don't match";
+                //message2="passwords invalid or don't match";
                 try {
                     password.setText("");
                     confirmPasswordBox.setText("");
                     SignUp(primaryStage,message2);
+                    return;
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
