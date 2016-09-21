@@ -329,24 +329,6 @@ public class Controller
                     e.printStackTrace();
                 }
             }
-            if (username.getText().isEmpty()==true||emailBox.getText().isEmpty()==true||
-                    phoneNumberBox.getText().isEmpty()==true ||phoneNumberBox.getText().isEmpty()==true
-                    ||photoPathBox.getText().isEmpty()==true ||firstNameBox.getText().isEmpty()==true
-                    ||lastNameBox.getText().isEmpty()==true|| genderBox.getText().isEmpty()==true
-                    ||dobBox.getText().isEmpty()==true ||SSNBox.getText().isEmpty()==true ||
-                    lastNameBox.getText().isEmpty()==true)
-            {
-                System.out.println("not all information is entered");
-                message2="not all information is entered";
-                try {
-                    SignUp(primaryStage,message2);
-                    return;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
             if(SSNBox.getText().length()!=9 || !SSNBox.getText().matches(".*\\d.*"))
             {
                 System.out.println("must have 9 digits in social security number");
@@ -418,7 +400,7 @@ public class Controller
                     e.printStackTrace();
                 }
             }
-            /*if(photoPathBox.getText().contains(null))
+            if(photoPathBox.getText().isEmpty()==true)
             {//this if statement doesnt work
                 System.out.println("please add photo");
                  message2="please add photo";
@@ -430,7 +412,25 @@ public class Controller
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }*/
+            }
+            if (username.getText().isEmpty()==true||emailBox.getText().isEmpty()==true||
+                    phoneNumberBox.getText().isEmpty()==true ||phoneNumberBox.getText().isEmpty()==true
+                    ||photoPathBox.getText().isEmpty()==true ||firstNameBox.getText().isEmpty()==true
+                    ||lastNameBox.getText().isEmpty()==true|| genderBox.getText().isEmpty()==true
+                    ||dobBox.getText().isEmpty()==true ||SSNBox.getText().isEmpty()==true ||
+                    lastNameBox.getText().isEmpty()==true)
+            {
+                System.out.println("not all information is entered");
+                message2="not all information is entered";
+                try {
+                    SignUp(primaryStage,message2);
+                    return;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             Boolean passwordCheck= passwordcheck(password.getText());//password check method stored in passwordCheck
             if(password.getText().equals(confirmPasswordBox.getText())
                 && passwordCheck==true)//continue if password and confirm password are matching
