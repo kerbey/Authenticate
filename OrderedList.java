@@ -182,11 +182,6 @@ public class OrderedList<T extends Comparable> implements OrderedListInterface<T
 
     @Override
     public boolean hasNext(T element) {//if there is a next node return true if not return false.
-//        System.out.println("hasNext method");
-//        if(newNode.getLink()==null) {
-//            System.out.println("there's no next element");
-//            return false;}
-//        else
         int place=0;
         for(int i=0;i<list.length;i++)
         {
