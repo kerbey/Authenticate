@@ -16,7 +16,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
 
    public userClass()
    {
-      System.out.println("userClass default constructor");
+      //System.out.println("userClass default constructor");
    }
 
    public userClass( String UserName, String email, String phoneNumber, String passWord, String profilePhoto
@@ -34,7 +34,15 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
        setSS(SS);
        setLastname(lastName);
    }
-
+   public userClass(String UserName, String passWord)
+   {
+       this.UserName=UserName;
+       this.passWord=passWord;
+   }
+   public String toString()
+   {
+       return getUserName()+" "+getPassWord();
+   }
 
    public String getUserName()
    {
@@ -99,7 +107,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
     {//scan file and check to see if password is in any file line
         System.out.println();
         System.out.println();
-        System.out.println(" Person Compare method");
+        //System.out.println(" Person Compare method");
 
         String File = "LoginInformation.txt";
         String line = "";
@@ -109,11 +117,11 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
         //        +","+getUserName()+","+getPassWord()+","+getSS()+","+getPhoneNumber()+","+getProfilePhoto());
         for(int r=0;r<Controller.count;r++) {
             line = scanFile.nextLine();
-            System.out.println("line has ====" + line);
-            System.out.println(line.length());
+            //System.out.println("line has ====" + line);
+            //System.out.println(line.length());
             if(line.contains(passedInpassword))//|| !passedInpassword.contains(null))
             {
-                System.out.println("line already found dont copy it==");
+              //  System.out.println("line already found dont copy it==");
                 //r=Controller.count;
                 return true;
             }
@@ -122,7 +130,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
     }
     public void insert(String File)
     {
-        System.out.println("now inserting info to file");
+        //System.out.println("now inserting info to file");
         Scanner scanFile = Controller.createTextRead(File);// scan a file
         String olderLines = "";
         olderLines += scanFile.nextLine();
@@ -136,6 +144,7 @@ public class userClass extends Person //implements EventHandler<ActionEvent>
         }
         String line = Controller.count+1+" "+getFirstName()+","+getLastName()+","+getDob()+","+getGender()
         +","+getUserName()+","+getPassWord()+","+getEmail()+","+getSS()+","+getPhoneNumber()+","+getProfilePhoto();
+
 
         olderLines += "\n" + line;
         Controller.count++;
