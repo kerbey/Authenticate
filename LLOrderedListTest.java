@@ -88,7 +88,7 @@ public class LLOrderedListTest
         list.add("ggg");
         Assert.assertEquals("expected f ggg sd ","f ggg sd ",list.toString());
         list.reset();
-        Assert.assertEquals("expected f","f",list.toString());
+        Assert.assertEquals("expected f ","f ",list.toString());
     }
 
     @Test
