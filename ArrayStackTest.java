@@ -1,6 +1,6 @@
 package Test;
-import DataStructure.ArrayStack;
 import Exceptions.StackOverflowException;
+import DataStructure.ArrayStack;
 import org.junit.Assert;
 import org.junit.Test;
 
