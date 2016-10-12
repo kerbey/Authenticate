@@ -2,7 +2,6 @@ package DataStructure;
 
 import Exceptions.QueueUnderflowException;
 import Interface.QeueInterface;
-
 /**
  * Created by kerbeychevalier on 10/7/16.
  */
@@ -11,8 +10,7 @@ public class ArrayQueue<T> implements QeueInterface<T> {
     protected final int DEFCAP = 100; // default capacity
     protected T[] queue;
     protected int numElements = -1;
-    //protected int place = 0;
-    //protected int rear;
+    
     public ArrayQueue()
     //array that holds queue elements number of elements in the queue index of front of queue index of rear of queue
     {
