@@ -1,5 +1,4 @@
 package DataStructure;
-
 import Exceptions.StackOverflowException;
 import Exceptions.StackUnderflowException;
 import Interface.StackInterface;
