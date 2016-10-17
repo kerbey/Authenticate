@@ -1,4 +1,5 @@
 package sample;
+import DataStructure.LLOrderedList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -24,11 +25,11 @@ public class Controller
     Button logIn, SignUp, SignIn, addPhoto;
     Label firstNameLabel;
     String compareLine="";//string made for the username on the line
-    //static public String photopath;
+     LLOrderedList<String> list = new LLOrderedList<String>();
 
     public void LogIn(Stage primaryStage,String message) throws IOException {
         Countfilelines();
-        System.out.println("Controller LogIn");
+       // System.out.println("Controller LogIn");
         primaryStage.setTitle(message);
         username= new TextField();
         username.setPromptText("enter username");
@@ -148,14 +149,14 @@ public class Controller
     }
     private void Countfilelines() throws IOException
     {
-        System.out.println("Countfilelines");
+        //System.out.println("Countfilelines");
         LineNumberReader  lnr = new LineNumberReader(new FileReader(new File(File)));
         lnr.skip(Long.MAX_VALUE);
         System.out.println(lnr.getLineNumber()+1); //Add 1 because line index starts at 0
 // Finally, the LineNumberReader object should be closed to prevent resource leak
         lnr.close();
         count=lnr.getLineNumber()+1;
-        System.out.println("count=="+count);
+        //System.out.println("count=="+count);
     }
     private Boolean passwordcheck(String text)
     {
@@ -170,7 +171,7 @@ public class Controller
                 if(letters.substring(v,v+1).contains(text.substring(n,n+1)))
                 {
                     compare1=true;
-                    System.out.println("password has 1 capital letter");
+                    //System.out.println("password has 1 capital letter");
                     v=letters.length();
                 }
             }
@@ -179,7 +180,7 @@ public class Controller
                 if(numbers.substring(v,v+1).contains(text.substring(n,n+1)))
                 {
                     compare2=true;
-                    System.out.println("password has 1 number");
+                    //System.out.println("password has 1 number");
                     v=numbers.length();
                 }
             }
@@ -188,7 +189,7 @@ public class Controller
                 if(characters.substring(v,v+1).contains(text.substring(n,n+1)))
                 {
                     compare3=true;
-                    System.out.println("password has 1 special character");
+                    //System.out.println("password has 1 special character");
                     v=characters.length();
                 }
             }
@@ -227,8 +228,8 @@ public class Controller
     public void SignUp(Stage primaryStage, String message) throws Exception
     {
         Countfilelines();
-        System.out.println("Controller Class sign up method.");
-        //System.out.print("Count=="+count);
+        //System.out.println("Controller Class sign up method.");
+
         primaryStage.setTitle(message);
         firstNameBox= new TextField();
         firstNameBox.setPromptText("enter firstname");
@@ -286,7 +287,7 @@ public class Controller
         GridPane.setConstraints(emailBox,2,7);//row by column
         GridPane.setConstraints(SSNBox,2,8);//row by column
         GridPane.setConstraints(phoneNumberBox,2,9);//
-        //String photopath2;
+
         addPhoto= new Button("Browse");
         addPhoto.setOnAction(event ->
         {
@@ -295,25 +296,22 @@ public class Controller
             //^gets window for user to choose pictures
             File file= fileChooser.showOpenDialog(primaryStage);//user is able to choose a photo because of this
 
-             //photopath=file.getPath();
+
             photoPathBox.setText(file.getPath());
             //^path to photo stored in string to add to text file
             photoPathBox.setPrefColumnCount(10);//amount of characters that are shown in textbox at once
             photoPathBox.getText();
         });
         GridPane.setConstraints(addPhoto,2,11);//row, column
-        //photopath2=photopath+"";
+
         SignIn= new Button("Create Account");
         SignIn.setOnAction(event ->
         {
-            //System.out.println("Empty===="+username.getText().isEmpty());
+
             genderBox.setText(genderBox.getText().toLowerCase());//lower case for gender
             userClass u= new userClass(username.getText(), emailBox.getText(), phoneNumberBox.getText(),
                     password.getText(), photoPathBox.getText(), firstNameBox.getText(),genderBox.getText()
                     ,dobBox.getText(),SSNBox.getText(), lastNameBox.getText());
-           //Boolean passwordCheck= passwordcheck(password.getText());//password check method stored in passwordCheck
-           // System.out.println("username get text=="+username.getText());
-            //System.out.println(u.getUserName());
 
             if(u.Compare2(username.getText()) == true&&username.getText().isEmpty()==false)
             {
@@ -435,14 +433,6 @@ public class Controller
             if(password.getText().equals(confirmPasswordBox.getText())
                 && passwordCheck==true)//continue if password and confirm password are matching
             {//and are in the correct format
-                //go to person class to see if first and last name gender date of birth and social security number
-//                Person p = new Person(firstNameBox.getText(),genderBox.getText(),dobBox.getText(),SSNBox.getText(),
-//                        lastNameBox.getText());
-                //go to asnwer class to see if username email phonenumber and password match and to see if usernames
-                //match with any others
-//                userClass u= new userClass(username.getText(), emailBox.getText(), phoneNumberBox.getText(),
-//                        password.getText(), photoPathBox.getText(), firstNameBox.getText(),genderBox.getText(),
-//                        dobBox.getText(),SSNBox.getText(), lastNameBox.getText());
                 Boolean answer= u.Compare2(password.getText());
                 System.out.println("Boolean answer2 is "+answer);
                 if (answer.equals(true))// && answer2.equals(true)) || (answer.equals(false) && answer2.equals(true)))
@@ -464,6 +454,9 @@ public class Controller
                     u.insert(File);
                     message2="new person added to file";
                     try {
+                        list.add(username.getText());
+                        System.out.println("USERNAME LIST== "+list.toString());
+
                         SignUp(primaryStage,message2);
                         return;
                     } catch (IOException e) {
@@ -472,13 +465,12 @@ public class Controller
                         e.printStackTrace();
                     }
                 }
-                System.out.println("done.");
+                //System.out.println("done.");
             }
             if(!(password.getText().equals(confirmPasswordBox.getText()))
                     || passwordCheck.equals(false))//|| passwordcheck(password.getText())==false)
             {//if password isnt confirmed or doesnt have required characters its invalid
-                System.out.println("password and confirm password dont match");
-                //message2="passwords invalid or don't match";
+                //System.out.println("password and confirm password dont match");
                 try {
                     password.setText("");
                     confirmPasswordBox.setText("");
@@ -491,6 +483,7 @@ public class Controller
                 }
             }
         });
+        //System.out.println("now done and added.");
         GridPane.setConstraints(SignIn,2,10);//row, column
         GridPane.setConstraints(photoPathBox,2,12);//row,column
         g.getChildren().addAll( firstNameBox, lastNameBox, dobBox
